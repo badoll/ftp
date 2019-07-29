@@ -5,15 +5,22 @@
 
 struct command {
 	int id;
-	char buf[BUFFERLEN];
+	int n_path;
+	char **path;
 };
 
-struct command input_to_command(char*);
-void send_cmd(struct command);
-void command_ls();
-void command_cd();
-void command_get();
-void command_put();
+int creat_dsocket(int,char*);
+struct command input_to_command(std::string);
+int send_cmd(int,int,struct command);
+void command_ls(int,int);
+void command_cd(int,int,struct command);
+void command_get(int,int,struct command);
+void command_put(int,int,struct command);
+void command_mkdir(int,int,struct command);
+void command_ccd(struct command);
+void command_cls();
+void command_exit(int);
+
 
 
 #endif 

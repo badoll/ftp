@@ -4,9 +4,14 @@
 #include <iostream>
 #include <stdio.h>
 #include <string.h>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <sstream>
 #include <errno.h>
 #include <stdlib.h>
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <sys/socket.h>
 /*
 	scoket();
@@ -38,29 +43,34 @@
 #include <unistd.h>
 #include <dirent.h>
 
-#define SERVER_PORT 2048
-#define BUFFERLEN 4096
+#define BUFFERLEN 	500 
+/* in struct packet, 500 + 12 = 512 */
+#define LINELEN  	256
 #define PACKET_SIZE sizeof(struct packet)
 #define ADDR_SIZE sizeof(struct sockaddr_in)
-using namespace std;
 
 enum TYPE
 {
 	INFO,
 	REQU,
-	DATA
+	DATA,
+	DONE,
+	ERROR
 };
 
 enum COMMAND
 {
-	NONE,
 	LS,
 	CD,
 	GET,
 	PUT,
-	EXIT
+	MKDIR,
+	CCD,
+	CLS,
+	EXIT,
+	NONE
 };
-
+#define N_COMMAND 6
 struct packet
 {
 	int type;     /* enum TYPE */
@@ -69,9 +79,16 @@ struct packet
 	char buffer[BUFFERLEN];
 };
 
-struct packet* packet_ntoh(struct packet*);
-struct packet* packet_hton(struct packet*);
+struct packet* packet_ntoh(struct packet*,struct packet*);
+struct packet* packet_hton(struct packet*,struct packet*);
 struct packet* init_packet();
+void set_zero(struct packet*);
 void print_packet(struct packet*);
+int recv_data(int,struct packet*);
+int send_data(int,struct packet*);
+void send_file(int,FILE*);
+void recv_file(int,FILE*);
+
+
 
 #endif
