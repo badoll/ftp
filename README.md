@@ -12,3 +12,5 @@
 - put $(path/s)
 - mkdir $(path)
 - exit: client
+
+#### Not according to standard FILE TRANSFER PROTOCOL, just for practice.
